@@ -1,1 +1,71 @@
-ff
+-- ===============================
+-- 📁 SQL Script: sample_script.sql
+-- وصف: سكربت شامل لأوامر SQL الأساسية
+-- ===============================
+
+-- 1. إنشاء قاعدة البيانات
+CREATE DATABASE IF NOT EXISTS SampleDB;
+USE SampleDB;
+
+-- 2. إنشاء جدول الموظفين
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Department VARCHAR(50),
+    Salary DECIMAL(10,2),
+    HireDate DATE
+);
+
+-- 3. إدخال بيانات إلى جدول الموظفين
+INSERT INTO Employees (FirstName, LastName, Department, Salary, HireDate)
+VALUES 
+('Ali', 'Hassan', 'IT', 5500.00, '2022-01-15'),
+('Sara', 'Khalid', 'HR', 4500.00, '2021-10-01'),
+('Mona', 'Salem', 'Finance', 6200.00, '2020-06-12');
+
+-- 4. استعلامات بيانات
+SELECT * FROM Employees;
+SELECT FirstName, LastName, Department FROM Employees;
+SELECT * FROM Employees WHERE Department = 'IT';
+SELECT * FROM Employees WHERE Salary > 5000;
+SELECT * FROM Employees ORDER BY Salary DESC;
+
+-- 5. تحديث وحذف
+UPDATE Employees
+SET Salary = 6000
+WHERE EmployeeID = 1;
+
+DELETE FROM Employees
+WHERE EmployeeID = 2;
+
+-- 6. دوال تجميعية
+SELECT COUNT(*) AS TotalEmployees FROM Employees;
+SELECT MAX(Salary) AS MaxSalary FROM Employees;
+SELECT SUM(Salary) AS TotalSalaries FROM Employees;
+SELECT Department, AVG(Salary) AS AvgSalary
+FROM Employees
+GROUP BY Department;
+
+-- 7. إنشاء جدول المشاريع وربطه بالموظفين
+CREATE TABLE Projects (
+    ProjectID INT PRIMARY KEY AUTO_INCREMENT,
+    ProjectName VARCHAR(100),
+    EmployeeID INT,
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
+
+INSERT INTO Projects (ProjectName, EmployeeID)
+VALUES
+('Website Redesign', 1),
+('Payroll System', 3);
+
+-- الربط بين الموظفين والمشاريع
+SELECT E.FirstName, E.LastName, P.ProjectName
+FROM Employees E
+JOIN Projects P ON E.EmployeeID = P.EmployeeID;
+
+-- 8. حذف الجداول وقاعدة البيانات (اختياري)
+-- DROP TABLE IF EXISTS Projects;
+-- DROP TABLE IF EXISTS Employees;
+-- DROP DATABASE IF EXISTS SampleDB;

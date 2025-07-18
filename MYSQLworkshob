@@ -31,10 +31,11 @@ SELECT * FROM Employees WHERE Department = 'IT';
 SELECT * FROM Employees WHERE Salary > 5000;
 SELECT * FROM Employees ORDER BY Salary DESC;
 
--- 5. تحديث وحذف
-UPDATE Employees
+-- 5.  وتعديل تحديث وحذف
+-UPDATE Employees
 SET Salary = 6000
 WHERE EmployeeID = 1;
+-alter table statement = لتعديل الجدول سواء بالاضافة او التغير  او الحذف او تغير اسم الجدول
 
 DELETE FROM Employees
 WHERE EmployeeID = 2;

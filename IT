@@ -1,1 +1,2 @@
-
+لتعديل كلمة المرور لليوزر في باستخدام POWERSHLL:
+net user اسم الشخص/logonpasswordchg:yes

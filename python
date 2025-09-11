@@ -120,4 +120,48 @@ df.describe().T       في حال الاعمدة كانت كثير ,يقوم ب�
 2-plot.show()
 --------------------------------------------------------------------------------------
 .plot.bar()
+-------------------------------------------------------------------------------------------
+# 1️⃣ استيراد المكتبات
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+
+
+# 3️⃣ معالجة البيانات النصية (Encoding)
+df_encoded = df.copy()
+label_encoders = {}
+for col in df_encoded.select_dtypes(include=['object']).columns:
+    le = LabelEncoder()
+    df_encoded[col] = le.fit_transform(df_encoded[col].astype(str))
+    label_encoders[col] = le
+
+# 4️⃣ تحديد الـ Features والـ Target
+X = df_encoded.drop(["lung_cancer", "patient_id"], axis=1)  # المتغيرات المستقلة
+y = df_encoded["lung_cancer"]  # المتغير الهدف
+
+# 5️⃣ تقسيم البيانات تدريب / اختبار
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+# 6️⃣ توحيد القيم (Scaling)
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# 7️⃣ بناء نموذج Logistic Regression
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train, y_train)
+
+# 8️⃣ التنبؤ على بيانات الاختبار
+y_pred = model.predict(X_test)
+
+# 9️⃣ تقييم النموذج
+print("✅ تقرير التصنيف:")
+print(classification_report(y_test, y_pred))
+
+print("✅ مصفوفة الارتباك:")
+print(confusion_matrix(y_test, y_pred))
 
